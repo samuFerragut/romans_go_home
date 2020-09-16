@@ -44,4 +44,8 @@ public class NumeroRomano {
     public RegexNumerosRomanos getRegexDiccionario() {
         return this.regexDiccionario;
     }
+
+    public void initRegexDicionario() {
+        getRegexDiccionario().addRegex("grupoSumatorio", "(?<!C)[DM]|(?<!X)[LC](?![DM])|(?<!I)[VX](?![LC])|I(?![VX])");
+    }
 }
