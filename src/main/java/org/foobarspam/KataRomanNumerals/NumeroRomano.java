@@ -48,4 +48,38 @@ public class NumeroRomano {
     public void initRegexDicionario() {
         getRegexDiccionario().addRegex("grupoSumatorio", "(?<!C)[DM]|(?<!X)[LC](?![DM])|(?<!I)[VX](?![LC])|I(?![VX])");
     }
+
+    public void addRegex(String descripcion, String regex) {
+        getRegexDiccionario().addRegex(descripcion, regex);
+    }
+
+    public List<String> getExpresionesRegulares() {
+        List<String> listaRegex = new ArrayList<String>(getRegexDiccionario().getRegex().values());
+        return listaRegex;
+    }
+
+    private Matcher createMatcher(String regex) {
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(this.numeroRomano);
+        return matcher;
+    }
+
+    private void groupSumatoryToDecimal(Matcher matcher) {
+        while (matcher.find()) {
+            this.numeroDecimal += valorDecimal(matcher.group());
+        }
+    }
+
+    public short valorDecimal(String numeroRomano) {
+        SimbolosRomanos simbolo = Enum.valueOf(SimbolosRomanos.class, String.valueOf(numeroRomano));
+        return (short) simbolo.getValorDecimal();
+    }
+
+    public short toDecimal() {
+        for(String regex : getRegexDiccionario().getValues()) {
+            Matcher matcher = createMatcher(regex);
+            groupSumatoryToDecimal(matcher);
+        }
+        return getNumeroDecimal();
+    }
 }
